@@ -34,6 +34,7 @@ ext.subProjs = subProjs
 configure(allProjs) {
     apply plugin: 'application'
     apply plugin: 'java'
+    apply plugin: 'maven'
     apply plugin: 'scala'
     // apply plugin: 'findbugs'
     apply plugin: 'org.scoverage'
@@ -263,6 +264,21 @@ configure(allProjs) {
 
     if (System.getenv("TEST_FILES") != null) {
         testScoverage.setIncludes(Arrays.asList(System.getenv("TEST_FILES").split('\n')))
+    }
+
+    task writeNewPom << {
+        pom {
+            project {
+                inceptionYear '2014'
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+            }
+        }.writeTo("pom.xml")
     }
 }
 
